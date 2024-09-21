@@ -13,7 +13,7 @@ import (
 
 const (
 	NATS_SERVER_URL string = "192.168.3.34:4222"
-	PRODUCER_COUNT  int    = 10
+	PRODUCER_COUNT  int    = 2
 )
 
 func publishMessages(wg *sync.WaitGroup, id int, nc *nats.Conn, subject string, msgCount int, interval time.Duration) {
@@ -46,7 +46,7 @@ func main() {
 	var wg sync.WaitGroup
 	for i := 0; i < PRODUCER_COUNT; i++ {
 		wg.Add(1)
-		subj := fmt.Sprintf("producer-%d.", i)
+		subj := fmt.Sprintf("producer-%d.msgs", i)
 		pubInterval := time.Duration(rand.Intn(1000)) * time.Millisecond
 		go publishMessages(&wg, i, nc, subj, rand.Intn(100), pubInterval)
 	}
